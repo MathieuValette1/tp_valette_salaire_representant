@@ -9,6 +9,7 @@ public class TestRepresentant {
 	// Quelques constantes
 	private static final float FIXE_BASTIDE = 1000f;
 	private static final float INDEMNITE_OCCITANIE = 200f;
+        private static final String ADRESSE = "place de l'église";
 	
 	private Representant r; // L'objet à tester
 	private ZoneGeographique occitanie;
@@ -20,7 +21,9 @@ public class TestRepresentant {
 		occitanie.setIndemniteRepas(INDEMNITE_OCCITANIE);
 
 		r = new Representant(36, "Bastide", "Rémi", occitanie);	
-		r.setSalaireFixe(FIXE_BASTIDE);				
+		r.setSalaireFixe(FIXE_BASTIDE);	
+                r.setAdresse(ADRESSE);
+                r.setSecteur(occitanie);
 	}
 	
 	@Test
@@ -82,6 +85,62 @@ public class TestRepresentant {
 		}
 
 	}
+        
+        @Test
+        public void testCAMoisTropHaut(){
+            try {
+                r.enregistrerCA(15, 100);
+                fail("un mois ne peut pas être supérieur à 12");
+            }catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+        }
+        
+        @Test
+        public void testCAMoisTropBas(){
+            try {
+                r.enregistrerCA(-10, 100);
+                fail("un mois ne peut pas être négatif");
+            }catch (IllegalArgumentException e) {
+			// Si on arrive ici, c'est normal, c'est le comportement attendu
+		}
+        }
+
+        @Test
+        public void bonNumeroGet(){
+            assertEquals(36, r.getNumero(), "Le numéro n'est pas le bon");
+        }
+        
+        @Test
+        public void bonAdresseGet(){
+            assertEquals(ADRESSE, r.getAdresse(), "L'adresse n'est pas la bonne");
+        }
+
+        @Test
+        public void bonNomGet(){
+            assertEquals("Bastide", r.getNom(), "Le nom n'est pas le bon");
+        }
+        
+        @Test
+        public void bonPrenomGet(){
+            assertEquals("Rémi", r.getPrenom(), "Le prénom n'est pas le bon");
+        }
+        
+        @Test
+        public void bonSalaireFixeGet(){
+            assertEquals(FIXE_BASTIDE, r.getSalaireFixe(), "Le salaire n'est pas le bon");
+        }
+        
+        @Test
+        public void bonSecteurGet(){
+                assertEquals(occitanie, r.getSecteur(), "Ce n'est pas le bon secteur");
+                
+        }
+        
+        @Test
+        public void testToString(){
+                assertEquals("Representant{numero=36, nom=Bastide, prenom=Rémi}", r.toString(), "La conversion n'est pas faite");
+        }
 	
 	
 }
